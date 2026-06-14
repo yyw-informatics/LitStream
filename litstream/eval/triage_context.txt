@@ -1,0 +1,16 @@
+PROJECT: CITE-seq / single-cell multi-omics study of APOE4 microglia in Alzheimer's disease.
+
+DATA: Human CITE-seq (paired single-cell RNA + cell-surface protein via antibody-derived
+tags / ADTs). Microglia and brain immune cells.
+
+INTERESTED IN (relevant):
+- Methods for CITE-seq / ADT normalization and denoising (e.g. dsb, totalVI).
+- Single-cell multi-omics integration that models surface protein + RNA jointly.
+- Microglia biology, subtypes, and states in neurodegeneration / Alzheimer's.
+- APOE / APOE4 genetics and mechanism in the brain / neuroinflammation.
+- Tooling in the scverse ecosystem (scanpy, scvi-tools, muon) applied to CITE-seq.
+
+NOT INTERESTED IN (not relevant):
+- Work with no single-cell component, or unrelated organisms / tissues / diseases.
+- APOE in contexts unrelated to brain (e.g. cardiovascular lipid metabolism only).
+- Single-cell methods that do not touch surface protein AND are not about our biology.

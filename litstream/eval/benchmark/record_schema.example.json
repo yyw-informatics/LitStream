@@ -1,0 +1,13 @@
+{
+  "_comment": "SINGLE SOURCE OF TRUTH for the extraction record shape. The MINE extractor and this scorer MUST use these exact field names. Benchmark mapping: genes->BioRED gene, species->BioRED species, cell_types->JNLPBA cell-type, frequencies->MeasEval (quantities + measured entity), gating_thresholds->MeasEval (quantities). surface_markers + signatures have no public benchmark (known gap, not scored). relevance + tissue are internal (not scored). The code mirror of this is fields.py.",
+  "paper_id": "...",
+  "relevance": "HIGH | MODERATE | LOW | NOT_USEFUL",
+  "species": ["human"],
+  "tissue": ["PBMC"],
+  "genes": [{ "symbol": "FOXP3", "species": "human", "source_quote": "..." }],
+  "cell_types": [{ "name": "regulatory T cell", "source_quote": "..." }],
+  "surface_markers": [{ "marker": "CD25", "maps_to_gene": "IL2RA", "source_quote": "..." }],
+  "frequencies": [{ "cell_type": "Treg", "value": 5.2, "unit": "%", "of_population": "CD4 T cells", "condition": "healthy", "source_quote": "..." }],
+  "gating_thresholds": [{ "marker": "CD25", "operator": ">", "value": "high", "source_quote": "..." }],
+  "signatures": [{ "name": "Treg signature", "genes": ["FOXP3", "IL2RA", "CTLA4"], "species": "human", "source_quote": "..." }]
+}

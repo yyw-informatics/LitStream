@@ -1,0 +1,2 @@
+{"paper_id": "paper_A", "statement": "IFN-beta increased FOXP3 in regulatory T cells", "readout": "FOXP3", "direction": "increase", "cell_type": "regulatory T cell", "evidence_mode": "interventional"}
+{"paper_id": "paper_B", "statement": "FOXP3 and CD25 marked regulatory T cells", "readout": "FOXP3", "direction": "unknown", "cell_type": "regulatory T cell", "evidence_mode": "descriptive_marker"}

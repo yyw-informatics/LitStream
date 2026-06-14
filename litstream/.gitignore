@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+litstream.db
+litstream.db-wal
+litstream.db-shm
+.env
+.env.local

@@ -1,0 +1,50 @@
+# Surface (ADT) marker <-> gene/RNA correspondences.
+#
+# `markers`: CITE-seq surface marker -> the gene whose RNA it corresponds to.
+# This is a *correspondence*, NOT equivalence: CD25 protein != IL2RA RNA. The bridge always carries
+# a warning that protein direction is not directly supported.
+#
+# `groups`: spelling-equivalence sets for entity-presence matching.
+
+markers:
+  CD25: IL2RA
+  CD279: PDCD1
+  PD-1: PDCD1
+  PD-L1: CD274
+  CD20: MS4A1
+  CD127: IL7R
+  CD16: FCGR3A
+  CD56: NCAM1
+  CD8: CD8A
+  CD3: CD3E
+  CD62L: SELL
+  CCR7: CCR7
+  CTLA4: CTLA4
+  CD152: CTLA4
+  CD138: SDC1
+  CD117: KIT
+  CD123: IL3RA
+  CD11b: ITGAM
+  CD11c: ITGAX
+  CD14: CD14
+  CD45RA: PTPRC
+  CD45RO: PTPRC
+
+groups:
+  - [CD25, IL2RA]
+  - [CD279, PDCD1, PD-1, PD1]
+  - [PD-L1, CD274]
+  - [CD20, MS4A1]
+  - [FOXP3, scurfin]
+  - [CD45, CD45RA, CD45RO, CD45RB, PTPRC]
+  - [CD8, CD8A, CD8B]
+  - [CD3, CD3D, CD3E, CD3G]
+  - [CD127, IL7R]
+  - [CD16, FCGR3A]
+  - [CD56, NCAM1]
+  - [CD123, IL3RA]
+  - [CD62L, SELL]
+  - [CCR7, CD197]
+  - [CTLA4, CD152]
+  - [CD138, SDC1]
+  - [CD117, KIT]

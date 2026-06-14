@@ -1,0 +1,96 @@
+# Backends for NON-AGENTIC pipeline tasks (triage, metadata extraction, rerank).
+# Three experiment tracks; enable/disable freely. The compare harness runs every
+# enabled backend on the same prompt and records cost to the ledger.
+#
+# kind: openai_compat  → base_url + model + optional api_key_env (DeepSeek, OpenAI, Ollama, vLLM)
+#       anthropic      → model + api_key_env (Claude Haiku)
+# Seed each model's price into the ledger (seed_pricing) so cost is computed;
+# local models price at $0. Confirm exact rates in each provider's console.
+
+task_models:
+
+  # ── Track 1: free / local (open HF models via Ollama's OpenAI-compatible API) ──
+  - name: local-llama
+    kind: openai_compat
+    base_url: http://localhost:11434/v1     # `ollama serve`; pull e.g. llama3.1, qwen2.5
+    model: llama3.1:8b
+    api_key: ollama                          # placeholder; Ollama ignores it
+    enabled: true
+    price_usd_per_mtok: { input: 0.0, output: 0.0, cached_input: 0.0 }
+
+  - name: local-qwen
+    kind: openai_compat
+    base_url: http://localhost:11434/v1
+    model: qwen2.5:7b
+    api_key: ollama
+    enabled: true
+    price_usd_per_mtok: { input: 0.0, output: 0.0, cached_input: 0.0 }
+
+  # ── Track 2: DeepSeek (OpenAI-compatible, paid but very cheap) ──
+  - name: deepseek
+    kind: openai_compat
+    base_url: https://api.deepseek.com/v1
+    model: deepseek-chat                     # V3; deepseek-reasoner = R1
+    api_key_env: DEEPSEEK_API_KEY
+    enabled: true
+    price_usd_per_mtok: { input: 0.27, output: 1.10, cached_input: 0.07 }  # confirm; off-peak cheaper
+
+  - name: deepseek-reasoner
+    kind: openai_compat
+    base_url: https://api.deepseek.com/v1
+    model: deepseek-reasoner                 # "thinking mode": returns reasoning_content + content;
+    api_key_env: DEEPSEEK_API_KEY            # we read content (the final JSON), thinking is ignored.
+    enabled: true
+    price_usd_per_mtok: { input: 0.55, output: 2.19, cached_input: 0.14 }
+
+  # ── Track 3a: cheaper hosted — OpenAI mini ──
+  - name: openai-mini
+    kind: openai_compat
+    base_url: https://api.openai.com/v1
+    model: gpt-4o-mini                       # swap to current mini tier
+    api_key_env: OPENAI_API_KEY
+    enabled: false                           # flip on when you add the key
+    price_usd_per_mtok: { input: 0.15, output: 0.60, cached_input: 0.075 }  # confirm
+
+  # ── OpenAI flagships (for the agentic provider bake-off) ──
+  - name: gpt-4o
+    kind: openai_compat
+    base_url: https://api.openai.com/v1
+    model: gpt-4o
+    api_key_env: OPENAI_API_KEY
+    enabled: false                           # bake-off only, not a triage backend
+    price_usd_per_mtok: { input: 2.50, output: 10.00, cached_input: 1.25 }  # confirm
+
+  - name: gpt-5
+    kind: openai_compat
+    model: gpt-5                             # reasoning model → max_completion_tokens
+    base_url: https://api.openai.com/v1
+    api_key_env: OPENAI_API_KEY
+    reasoning: true
+    enabled: false
+    price_usd_per_mtok: { input: 1.25, output: 10.00, cached_input: 0.125 }  # CONFIRM
+
+  - name: gpt-5.5
+    kind: openai_compat
+    model: gpt-5.5                           # reasoning model; CONFIRM exact model id
+    base_url: https://api.openai.com/v1
+    api_key_env: OPENAI_API_KEY
+    reasoning: true
+    enabled: false
+    price_usd_per_mtok: { input: 2.00, output: 12.00, cached_input: 0.20 }   # ESTIMATE — confirm
+
+  # ── Track 3b: cheaper hosted — Claude Haiku ──
+  - name: claude-haiku
+    kind: anthropic
+    model: claude-haiku-4-5
+    api_key_env: ANTHROPIC_API_KEY
+    enabled: true
+    price_usd_per_mtok: { input: 1.00, output: 5.00, cached_input: 0.10 }   # confirm in console
+
+  # Premium tier — to show that paying more buys ~no accuracy on triage.
+  - name: claude-sonnet
+    kind: anthropic
+    model: claude-sonnet-4-6
+    api_key_env: ANTHROPIC_API_KEY
+    enabled: false
+    price_usd_per_mtok: { input: 3.00, output: 15.00, cached_input: 0.30 }  # list-price estimate

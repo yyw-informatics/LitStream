@@ -1,0 +1,50 @@
+# LitStream source & journal configuration
+# Used by the acquisition step.
+# Journal filters apply ONLY to published-literature aggregators (PubMed / Europe PMC).
+# Preprint servers (bioRxiv, arXiv) are not journal-filtered.
+
+sources:
+  biorxiv:
+    enabled: true
+    servers: [biorxiv, medrxiv]
+    api: "https://api.biorxiv.org/details/{server}/{from}/{to}"   # date-range, JSON, full PDF links
+    journal_filter: false
+
+  arxiv:
+    enabled: true
+    categories: [q-bio.GN, q-bio.QM, q-bio.MN, stat.ML, cs.LG]
+    api: "http://export.arxiv.org/api/query"                      # Atom feed, full PDFs
+    journal_filter: false
+
+  europepmc:                                                       # published lit; covers PubMed + OA full text
+    enabled: true
+    api: "https://www.ebi.ac.uk/europepmc/webservices/rest/search"
+    journal_filter: true
+
+  semantic_scholar:
+    enabled: true
+    api: "https://api.semanticscholar.org/graph/v1/paper/search"
+    api_key_env: SEMANTIC_SCHOLAR_API_KEY                          # optional; raises rate limits
+    journal_filter: true
+
+# Journal targeting applied to journal_filter:true sources.
+# Matched by name and (preferred) ISSN to avoid near-name collisions.
+journal_filters:
+  core_methods:
+    - { name: "Nature Methods",        issn: "1548-7105" }
+    - { name: "Nature Biotechnology",  issn: "1546-1696" }
+    - { name: "Genome Biology",        issn: "1474-760X" }
+    - { name: "Bioinformatics",        issn: "1367-4811" }
+    - { name: "Cell Systems",          issn: "2405-4720" }
+  high_impact_biology:
+    - { name: "Nature",                issn: "1476-4687" }
+    - { name: "Cell",                  issn: "1097-4172" }
+    - { name: "Science",               issn: "1095-9203" }
+    - { name: "Nature Communications", issn: "2041-1723" }
+    - { name: "Nature Genetics",       issn: "1546-1718" }
+
+budget:
+  monthly_cap_usd: 50.00
+  warn_pct: 80          # incident opens at $40 month-to-date
+  hard_stop: true       # block new runs at $50 month-to-date
+  window: calendar_month_utc

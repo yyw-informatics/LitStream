@@ -1,0 +1,806 @@
+{
+  "meta": {
+    "name": "claim_entailment_battery",
+    "description": "Adversarial labeled battery for claim-entailment verifiers (does PASSAGE support CLAIM?), bioinformatics / ML method-paper domain. Regression-test any verifier that answers support/not-support.",
+    "date": "2026-06-12",
+    "n": 41,
+    "gold_true": 14,
+    "gold_false": 27,
+    "modes": {
+      "faithful_positive": 6,
+      "faithful_paraphrase": 4,
+      "faithful_synonym": 4,
+      "distribution_swap": 4,
+      "direction_reversal": 4,
+      "explicit_negation": 5,
+      "contradiction": 5,
+      "quantifier_scope": 4,
+      "world_knowledge_bait": 5
+    },
+    "built_by": "9 mode-specialist generator agents -> 1 curator agent (54 raw -> 41 kept); workflow 'claim-entailment-battery'",
+    "audited_by": "5 independent blind stance-auditors (literal/expert/skeptic/charitable/neutral) on a SHUFFLED copy (workflow 'battery-gold-audit'): 40/41 unanimous with gold, 0 suspect, 1 stance_split (faithful_synonym '1e4 == ten thousand') where only the strict literalist dissents on FORM not meaning.",
+    "caveat": "LLM-authored and LLM-audited (Claude family). Strong cross-stance agreement, NOT human ground truth -- a human spot-check is the final seal.",
+    "fields": "each case: passage, claim, gold(bool), mode, rationale, audit{n_agree,n_total,votes,category}"
+  },
+  "cases": [
+    {
+      "passage": "Our integration model treats the batch label as a known covariate and learns a shared latent representation in which cells from different batches are aligned while biological variation is preserved.",
+      "claim": "The model conditions on batch as a covariate to produce a shared latent space that removes batch effects but retains biological signal.",
+      "gold": true,
+      "mode": "faithful_positive",
+      "rationale": "The claim faithfully paraphrases the passage's stated goal of batch-conditioned alignment that preserves biological variation.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": true,
+          "expert": true,
+          "skeptic": true,
+          "charitable": true,
+          "neutral": true
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "passage": "After constructing a k-nearest-neighbor graph on the principal components, we apply the Leiden algorithm to partition cells into clusters, with the resolution parameter controlling the granularity of the resulting communities.",
+      "claim": "Clusters are obtained by running Leiden community detection on a kNN graph built from principal components, and resolution tunes cluster granularity.",
+      "gold": true,
+      "mode": "faithful_positive",
+      "rationale": "The claim restates the passage's clustering pipeline (kNN graph on PCs, Leiden, resolution controls granularity) verbatim in meaning.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": true,
+          "expert": true,
+          "skeptic": true,
+          "charitable": true,
+          "neutral": true
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "passage": "We annotate cell types by computing, for each cluster, the average expression of curated marker-gene sets and assigning the label whose marker signature scores highest.",
+      "claim": "Cell-type labels are assigned per cluster by scoring curated marker-gene sets and choosing the highest-scoring signature.",
+      "gold": true,
+      "mode": "faithful_positive",
+      "rationale": "The claim is a light paraphrase of the passage's marker-based, highest-score annotation rule.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": true,
+          "expert": true,
+          "skeptic": true,
+          "charitable": true,
+          "neutral": true
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "passage": "The encoder is a three-layer feed-forward network with ReLU activations, and we apply dropout with probability 0.1 after each hidden layer to regularize training.",
+      "claim": "The encoder uses a three-layer ReLU feed-forward architecture with 0.1 dropout applied after every hidden layer for regularization.",
+      "gold": true,
+      "mode": "faithful_positive",
+      "rationale": "The claim reproduces the passage's architecture details (depth, ReLU, 0.1 dropout placement and purpose) faithfully.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": true,
+          "expert": true,
+          "skeptic": true,
+          "charitable": true,
+          "neutral": true
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "passage": "In our droplet-based scATAC-seq protocol, transposase-accessible chromatin is tagged with sequencing adapters inside individual nuclei before they are partitioned into droplets carrying barcoded beads.",
+      "claim": "The scATAC-seq assay uses transposase to add adapters to accessible chromatin in nuclei, which are then captured in barcoded droplets.",
+      "gold": true,
+      "mode": "faithful_positive",
+      "rationale": "The claim paraphrases the passage's described assay chemistry (transposase tagging of accessible chromatin, droplet barcoding) without adding anything.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": true,
+          "expert": true,
+          "skeptic": true,
+          "charitable": true,
+          "neutral": true
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "passage": "To select informative features, we rank genes by the variance of their normalized expression after accounting for the mean-variance relationship and retain the top 2,000 most variable genes for downstream analysis.",
+      "claim": "The method picks the top 2,000 highly variable genes, ranked by mean-adjusted variance, for downstream steps.",
+      "gold": true,
+      "mode": "faithful_positive",
+      "rationale": "The claim restates the passage's HVG selection (top 2,000 by variance corrected for the mean-variance trend) with light wording changes.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": true,
+          "expert": true,
+          "skeptic": true,
+          "charitable": true,
+          "neutral": true
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "claim": "Each cell's counts are divided by its total count and then scaled by 10,000 before a log transformation is applied.",
+      "passage": "To normalize the raw count matrix, we divided the expression of each gene in a cell by that cell's total UMI count and multiplied the result by a factor of 10,000. The size-factor-adjusted values were subsequently log-transformed with a pseudocount of one.",
+      "gold": true,
+      "mode": "faithful_paraphrase",
+      "rationale": "Claim restates the per-cell total normalization, 10,000 scaling, and log step described in the passage with reordered wording.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": true,
+          "expert": true,
+          "skeptic": true,
+          "charitable": true,
+          "neutral": true
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "claim": "Clustering performance was evaluated using the adjusted Rand index against ground-truth labels.",
+      "passage": "To quantify how well the inferred partitions matched the annotated cell types, we computed the adjusted Rand index between each clustering and the reference labels. Higher ARI values indicate closer agreement with the known assignments.",
+      "gold": true,
+      "mode": "faithful_paraphrase",
+      "rationale": "Claim paraphrases the use of ARI versus ground-truth annotations stated directly in the passage.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": true,
+          "expert": true,
+          "skeptic": true,
+          "charitable": true,
+          "neutral": true
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "claim": "The autoencoder is trained to reconstruct its input by minimizing the difference between input and output.",
+      "passage": "The network learns a compact latent representation by attempting to reproduce its own input at the output layer. Training proceeds by reducing the reconstruction error, defined as the discrepancy between the original expression profile and its reconstructed version.",
+      "gold": true,
+      "mode": "faithful_paraphrase",
+      "rationale": "Claim is a faithful rewording of the reconstruction-loss objective the passage describes for the autoencoder.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": true,
+          "expert": true,
+          "skeptic": true,
+          "charitable": true,
+          "neutral": true
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "claim": "Dropout in single-cell data refers to genes that are expressed but recorded as zero counts.",
+      "passage": "A well-known artifact of single-cell RNA sequencing is the failure to detect transcripts that are genuinely present, yielding spurious zero entries. We refer to these false zeros, where an expressed gene goes uncaptured, as dropout events.",
+      "gold": true,
+      "mode": "faithful_paraphrase",
+      "rationale": "Claim restates the passage's definition of dropout as truly-expressed genes appearing as zeros.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": true,
+          "expert": true,
+          "skeptic": true,
+          "charitable": true,
+          "neutral": true
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "claim": "The method was evaluated on single-cell RNA sequencing data.",
+      "passage": "We benchmarked our integration approach across five scRNA-seq atlases spanning human pancreas, lung, and bone marrow tissues.",
+      "gold": true,
+      "mode": "faithful_synonym",
+      "rationale": "\"scRNA-seq\" is the conventional abbreviation for single-cell RNA sequencing, the exact assay the claim names.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": true,
+          "expert": true,
+          "skeptic": true,
+          "charitable": true,
+          "neutral": true
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "claim": "The autoencoder uses a variational framework to learn the latent representation.",
+      "passage": "Each cell is encoded into a low-dimensional embedding by a VAE, with the encoder outputting the parameters of an approximate posterior over the latent variables.",
+      "gold": true,
+      "mode": "faithful_synonym",
+      "rationale": "\"VAE\" stands for variational autoencoder; the passage describes exactly the variational latent-representation framework in the claim.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": true,
+          "expert": true,
+          "skeptic": true,
+          "charitable": true,
+          "neutral": true
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "claim": "Library-size differences are corrected by normalizing each cell to counts per ten thousand before log transformation.",
+      "passage": "Raw counts in each cell were scaled to a total of 1e4 and then log1p-transformed prior to downstream analysis.",
+      "gold": true,
+      "mode": "faithful_synonym",
+      "rationale": "\"scaled to a total of 1e4\" is counts per ten thousand and \"log1p\" is the log transformation, matching the claim's normalization.",
+      "audit": {
+        "n_agree": 4,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": true,
+          "skeptic": true,
+          "charitable": true,
+          "neutral": true
+        },
+        "category": "stance_split"
+      }
+    },
+    {
+      "claim": "The model employs a graph convolutional network to propagate information across the cell-similarity graph.",
+      "passage": "Information is aggregated across neighboring cells through stacked GCN layers operating on the cell-cell similarity graph, allowing each node to incorporate signal from its local neighborhood.",
+      "gold": true,
+      "mode": "faithful_synonym",
+      "rationale": "\"GCN layers\" are graph convolutional network layers; the passage describes the exact message-propagation mechanism in the claim.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": true,
+          "expert": true,
+          "skeptic": true,
+          "charitable": true,
+          "neutral": true
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "claim": "The method models UMI counts using a Poisson distribution with cell-specific size factors.",
+      "passage": "For each gene, we model the observed UMI counts across cells with a negative binomial distribution, estimating a gene-specific dispersion parameter to capture overdispersion beyond Poisson noise. Library size is incorporated as an offset term in the mean.",
+      "gold": false,
+      "mode": "distribution_swap",
+      "rationale": "Passage explicitly uses a negative binomial (with dispersion to exceed Poisson); claim swaps it to plain Poisson.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "claim": "Residuals from the normalization model are assumed to follow a Student-t distribution to be robust to outliers.",
+      "passage": "Our normalization procedure regresses out technical covariates and assumes the resulting Pearson residuals are approximately Gaussian, enabling downstream use of standard variance-stabilizing transformations. Genes are then ranked by residual variance under this normality assumption.",
+      "gold": false,
+      "mode": "distribution_swap",
+      "rationale": "Passage assumes Gaussian residuals; claim swaps to a heavy-tailed Student-t, a different distribution.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "claim": "The batch-integration model places a Laplace prior over the latent embedding to encourage sparsity.",
+      "passage": "The integration model embeds each cell into a shared latent space where the latent variables are given a standard Gaussian prior, and a batch-conditional decoder reconstructs the expression profile. Posterior inference is performed via amortized variational inference.",
+      "gold": false,
+      "mode": "distribution_swap",
+      "rationale": "Passage uses a Gaussian prior on the latent space; claim swaps it to a Laplace prior.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "claim": "Droplet ambient contamination is modeled as a Poisson mixture over background profiles.",
+      "passage": "We treat the number of contaminating molecules per droplet as a binomial draw from the total captured molecules, with the contamination fraction estimated per cell from empty-droplet barcodes. The ambient profile itself is estimated by pooling reads from low-count barcodes.",
+      "gold": false,
+      "mode": "distribution_swap",
+      "rationale": "Passage models contamination counts as binomial; claim swaps it to a Poisson mixture.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "claim": "On the PBMC benchmark, scran's pooling-based size factors yielded higher downstream clustering ARI than library-size normalization.",
+      "passage": "Across all five datasets, library-size normalization produced higher adjusted Rand index (ARI) in downstream Leiden clustering than scran's pooling-based size factors, with a mean ARI gap of 0.07 on the PBMC benchmark.",
+      "gold": false,
+      "mode": "direction_reversal",
+      "rationale": "Passage says library-size normalization gave higher ARI; the claim reverses the winner, asserting scran was higher.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "claim": "Harmony removed batch effects more slowly than scVI, taking longer wall-clock time to integrate the atlas.",
+      "passage": "On the 1.3-million-cell atlas, Harmony completed batch integration in 14 minutes, whereas scVI required 3.2 hours on the same GPU node to reach convergence.",
+      "gold": false,
+      "mode": "direction_reversal",
+      "rationale": "Passage shows Harmony was much faster (14 min vs 3.2 h); the claim states Harmony was slower, reversing the timing direction.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "claim": "Marker-based annotation with CellTypist increased the proportion of unassigned cells relative to manual curation.",
+      "passage": "Compared with manual curation, automated annotation using CellTypist decreased the fraction of unassigned cells from 18% to 4% while preserving rare-population labels.",
+      "gold": false,
+      "mode": "direction_reversal",
+      "rationale": "Passage reports a decrease in unassigned cells (18% to 4%); the claim says the proportion increased, reversing the direction.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "claim": "The negative binomial mixture model achieved lower log-likelihood on the test counts than the zero-inflated Poisson baseline.",
+      "passage": "On the held-out scRNA-seq counts, the negative binomial mixture model attained a higher test log-likelihood than the zero-inflated Poisson baseline (-2.41 vs -2.78 per cell), reflecting better fit to the observed overdispersion.",
+      "gold": false,
+      "mode": "direction_reversal",
+      "rationale": "Passage reports the NB mixture had higher (better) log-likelihood; the claim says it was lower, reversing the comparison.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "passage": "Unlike methods that rely on size-factor estimation, scNORM does not perform any library-size normalization prior to model fitting; instead, raw UMI counts are passed directly to the negative binomial layer, which absorbs sequencing-depth variation through an offset term learned per cell.",
+      "claim": "scNORM applies library-size normalization to the counts before fitting its negative binomial model.",
+      "gold": false,
+      "mode": "explicit_negation",
+      "rationale": "Passage explicitly states no library-size normalization is performed before fitting; claim asserts it is applied beforehand.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "passage": "Our batch-integration procedure operates in an unsupervised manner and assumes no shared cell-type labels across the batches being aligned. Correspondences are inferred purely from mutual nearest neighbors in the shared embedding.",
+      "claim": "The batch-integration method assumes that cell-type labels are shared across batches to guide alignment.",
+      "gold": false,
+      "mode": "explicit_negation",
+      "rationale": "Passage explicitly says it assumes no shared cell-type labels; claim asserts shared labels are assumed.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "passage": "We emphasize that the clustering algorithm does not require the number of clusters k to be specified in advance; the resolution parameter implicitly determines the granularity, and the final cluster count emerges from the modularity-optimization step.",
+      "claim": "The clustering algorithm requires the user to specify the number of clusters k beforehand.",
+      "gold": false,
+      "mode": "explicit_negation",
+      "rationale": "Passage explicitly states k need not be specified in advance; claim asserts it must be specified beforehand.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "passage": "The annotation classifier was trained exclusively on peripheral blood mononuclear cell references and was not exposed to any tumor-derived or tissue-resident cell populations during training. Performance on solid-tissue datasets should therefore be interpreted with caution.",
+      "claim": "The annotation classifier was trained on tumor-derived cell populations.",
+      "gold": false,
+      "mode": "explicit_negation",
+      "rationale": "Passage explicitly states tumor-derived populations were not in training; claim asserts they were.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "passage": "To keep inference tractable, the variational autoencoder uses a mean-field approximation in which the latent dimensions are treated as conditionally independent given the input. No full covariance structure among latent variables is modeled.",
+      "claim": "The variational autoencoder models a full covariance structure among its latent variables.",
+      "gold": false,
+      "mode": "explicit_negation",
+      "rationale": "Passage explicitly states no full covariance among latent variables is modeled (mean-field, independent); claim asserts the opposite.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "claim": "scVI infers its latent representation using a deterministic, non-probabilistic encoder with no distributional assumptions.",
+      "passage": "scVI models single-cell RNA-seq counts with a hierarchical Bayesian model in which the gene expression of each cell is drawn from a zero-inflated negative binomial distribution. A variational autoencoder is trained to approximate the posterior over a low-dimensional latent variable that captures biological state.",
+      "gold": false,
+      "mode": "contradiction",
+      "rationale": "The passage states scVI is a hierarchical Bayesian / variational (probabilistic) model with explicit ZINB distributional assumptions, directly contradicting the claim of a deterministic, non-probabilistic, assumption-free encoder.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "claim": "Harmony performs batch integration in a fully supervised manner, requiring ground-truth cell-type labels as input.",
+      "passage": "Harmony iteratively removes batch effects by clustering cells in a shared embedding and computing batch-specific correction factors for each soft cluster. The method operates without any cell-type annotations, relying only on the batch identity of each cell.",
+      "gold": false,
+      "mode": "contradiction",
+      "rationale": "The passage explicitly says Harmony operates without cell-type annotations, contradicting the claim that it is fully supervised and requires ground-truth labels.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "claim": "The proposed alignment step runs exclusively on the CPU and provides no GPU acceleration.",
+      "passage": "To handle the throughput of modern long-read sequencing, our aligner offloads the seed-and-extend stage to the GPU, achieving a 12x speedup over the CPU-only baseline. Index construction remains on the host, but all per-read scoring is executed in parallel across CUDA cores.",
+      "gold": false,
+      "mode": "contradiction",
+      "rationale": "The passage describes GPU offloading with CUDA cores and a 12x GPU speedup, directly contradicting the claim of CPU-exclusive execution with no GPU acceleration.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "claim": "SCTransform normalization assumes a Gaussian error model on the raw UMI counts.",
+      "passage": "SCTransform models the UMI counts of each gene with a regularized negative binomial regression, using sequencing depth as the sole explanatory variable. The Pearson residuals from this model serve as the normalized, variance-stabilized expression values.",
+      "gold": false,
+      "mode": "contradiction",
+      "rationale": "The passage states SCTransform uses a negative binomial regression on UMI counts, contradicting the claim of a Gaussian error model on raw counts.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "claim": "CellTypist requires manual gating by an expert immunologist and cannot assign cell-type labels automatically.",
+      "passage": "CellTypist provides a collection of pre-trained logistic regression models that automatically assign cell-type labels to single cells from their expression profiles. Once a model is selected, prediction is fully automated and produces both a label and a confidence probability for every cell.",
+      "gold": false,
+      "mode": "contradiction",
+      "rationale": "The passage says CellTypist assigns labels automatically via pre-trained models, directly contradicting the claim that it requires manual expert gating and cannot label automatically.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "passage": "We evaluated scVI batch integration on the human pancreas atlas, where it removed donor-specific variation while preserving cell-type structure. On this dataset, scVI outperformed Harmony and Scanorama by a clear margin in kBET and ASW metrics.",
+      "claim": "scVI outperforms Harmony and Scanorama on all single-cell batch-integration benchmarks.",
+      "gold": false,
+      "mode": "quantifier_scope",
+      "rationale": "Passage reports superiority only on the human pancreas atlas; the claim generalizes to all benchmarks.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "passage": "Under high-depth conditions (>50,000 reads per cell), our Poisson-based denoiser recovered low-expression transcripts that dropout had masked. We did not assess performance in shallow-sequencing regimes.",
+      "claim": "The Poisson-based denoiser recovers masked low-expression transcripts regardless of sequencing depth.",
+      "gold": false,
+      "mode": "quantifier_scope",
+      "rationale": "Recovery is shown only for high-depth (>50k reads) conditions; 'regardless of sequencing depth' overreaches and shallow regimes were untested.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "passage": "On the 10x Genomics PBMC 3k dataset, Leiden clustering at resolution 1.0 produced clusters that aligned cleanly with canonical immune marker genes. This concordance gave us confidence in the partition for downstream annotation.",
+      "claim": "Leiden clustering at resolution 1.0 always yields clusters that align with canonical marker genes.",
+      "gold": false,
+      "mode": "quantifier_scope",
+      "rationale": "Clean alignment is reported for one dataset at one resolution; 'always' generalizes far beyond the single observation.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "passage": "Quantile normalization stabilized the variance of our bulk RNA-seq cohort when libraries were prepared with the same polyA protocol. We caution that mixing library-prep chemistries can reintroduce systematic offsets.",
+      "claim": "In general, quantile normalization stabilizes RNA-seq variance across library-prep protocols.",
+      "gold": false,
+      "mode": "quantifier_scope",
+      "rationale": "Stabilization holds only within a single shared polyA protocol, and the passage warns mixed chemistries break it; 'in general, across protocols' contradicts the qualified scope.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "passage": "We applied log-transformation to the raw UMI count matrix prior to dimensionality reduction, using a pseudocount of one to handle zero entries. Highly variable genes were then selected based on their normalized dispersion.",
+      "claim": "Sequencing depth differences between cells introduce technical variation that normalization aims to remove.",
+      "gold": false,
+      "mode": "world_knowledge_bait",
+      "rationale": "True about why scRNA-seq normalization exists, but the passage only describes log-transformation and HVG selection, never mentioning sequencing depth or its motivation.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "passage": "Batch effects were corrected by aligning mutual nearest neighbors across the two sequencing runs in a shared low-dimensional embedding. The corrected embedding was used as input to all downstream analyses.",
+      "claim": "Harmony integrates datasets by iteratively clustering cells and computing batch-correction factors in principal-component space.",
+      "gold": false,
+      "mode": "world_knowledge_bait",
+      "rationale": "Accurate description of the Harmony algorithm, but this passage describes a mutual-nearest-neighbors approach and never mentions Harmony or iterative clustering.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "passage": "Cells were grouped using the Leiden algorithm at a resolution of 0.8, yielding 14 clusters. Cluster-specific marker genes were identified with a one-versus-rest Wilcoxon rank-sum test.",
+      "claim": "The Leiden algorithm guarantees that all resulting communities are internally well-connected, unlike the Louvain method.",
+      "gold": false,
+      "mode": "world_knowledge_bait",
+      "rationale": "True property distinguishing Leiden from Louvain, but the passage only reports that Leiden was run at a given resolution and says nothing about connectivity guarantees.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "passage": "Cell types were assigned by transferring labels from a curated reference atlas using a k-nearest-neighbor classifier on the integrated embedding. Annotations were manually reviewed against canonical marker expression.",
+      "claim": "Reference-based annotation can fail to identify cell types or states that are absent from the reference atlas.",
+      "gold": false,
+      "mode": "world_knowledge_bait",
+      "rationale": "A well-known limitation of reference-based annotation, but the passage only describes the labeling procedure and never discusses any limitation or out-of-reference states.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    },
+    {
+      "passage": "Our variational autoencoder models gene expression with a zero-inflated negative binomial likelihood, encoding each cell into a 10-dimensional latent space. The decoder reconstructs expected counts conditioned on a learned library-size factor.",
+      "claim": "The reparameterization trick allows gradients to be backpropagated through the stochastic sampling step during VAE training.",
+      "gold": false,
+      "mode": "world_knowledge_bait",
+      "rationale": "True and central to how VAEs are trained, but this passage describes only the likelihood, latent dimensionality, and decoder, never mentioning sampling or the reparameterization trick.",
+      "audit": {
+        "n_agree": 5,
+        "n_total": 5,
+        "votes": {
+          "literal": false,
+          "expert": false,
+          "skeptic": false,
+          "charitable": false,
+          "neutral": false
+        },
+        "category": "rock_solid"
+      }
+    }
+  ]
+}

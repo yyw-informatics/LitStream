@@ -1,0 +1,64 @@
+# A routine = one scheduled literature-research job.
+#
+# Model routing rationale:
+#   - mine / evaluate are high-volume extraction over many papers → cheaper model.
+#   - synthesize / design are integrative + ensembled → strongest model.
+# These are CLAUDE models. The non-agentic local/DeepSeek triage models are used
+# upstream in acquisition, not for the main research steps.
+#
+# SCOPE: bioinformatics / computational methods for CITE-seq analysis tasks only
+# (no disease-biology focus). Window: 2024-01-01 → now.
+
+name: weekly-citeseq
+schedule: "0 6 * * MON"
+timezone: America/Los_Angeles
+enabled: false
+project: citeseq_methods           # → <project_dir>/projects/citeseq_methods/
+context: projects/citeseq_methods/context.md   # relative to project_dir
+
+# Acquisition populates papers/ from these.
+# query = natural-language description (drives triage/LLM screening context).
+query: >
+  Bioinformatics and computational methods for CITE-seq (single-cell paired
+  RNA + surface-protein) analysis tasks: ADT normalization and denoising, ambient/
+  background removal, RNA–protein multimodal integration, doublet detection, cell-
+  type annotation from surface proteins, clustering, dimensionality reduction, and
+  batch integration. Methods/tools papers only — not disease-biology studies.
+
+# search_queries = focused keyword phrases sent to the source APIs (one search per
+# phrase per source, unioned + deduped). Keep each phrase tight (terms are ANDed).
+search_queries:
+  - CITE-seq ADT normalization method
+  - CITE-seq denoising ambient background removal
+  - CITE-seq multimodal integration RNA protein
+  - CITE-seq doublet detection
+  - CITE-seq cell type annotation surface protein
+  - CITE-seq clustering dimensionality reduction
+  - CITE-seq batch effect integration method
+
+sources: [arxiv, europepmc, europepmc_ppr, semantic_scholar]
+since_date: "2024-01-01"           # fixed window for the initial build (overrides lookback_days)
+lookback_days: 8                   # steady-state weekly mode: remove since_date to use this
+max_new_papers: 60
+
+# Pipeline settings
+phases: [mine, synthesize, evaluate, design]
+default_model: claude-fable-5
+models:
+  mine:       claude-haiku-4-5-20251001     # high-volume per-paper extraction
+  synthesize: claude-fable-5       # integrative, ensembled
+  evaluate:   claude-haiku-4-5-20251001     # per-method assessments
+  design:     claude-fable-5       # the integrative plan, ensembled
+max_cost_per_run_usd: 4.00         # per-run ceiling; one bad run can't drain the month
+invocation: scheduled
+
+# After mine, structure each evidence note to JSON and verify every fact against the source:
+# numeric/claim fields are entailment-checked (MiniCheck), entity mentions presence-checked.
+ground: true
+grounding:
+  backend: llm                     # real structured extraction (one model call per paper)
+  entity_verifier: overlap         # presence check for entity mentions
+  value_verifier: minicheck        # entailment check for numeric / claim facts
+  embeddings: hf
+
+deliver: [digest_md]               # add 'email' / 'slack' to enable push channels

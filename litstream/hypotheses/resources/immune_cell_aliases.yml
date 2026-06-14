@@ -1,0 +1,77 @@
+# Immune cell-type aliases + lineage parents.
+#
+# Each entry: <canonical name> -> {aliases: [...], parent: <canonical name | null>}.
+# Compatibility (normalize.cell_types_compatible) is decided from this tree:
+#   exact match          -> allowed, no penalty
+#   parent/child (is_a)  -> allowed, penalised
+#   same lineage root    -> allowed, penalised
+#   different lineages   -> blocked
+# Curated and deliberately small/auditable. Extend rather than reach for a full ontology in core.
+
+T cell:
+  aliases: [T cells, T lymphocyte, T lymphocytes, T-cell]
+  parent: lymphocyte
+
+CD4-positive T cell:
+  aliases: [CD4 T, CD4+ T cell, CD4 T cell, CD4+ T cells, CD4 T cells, helper T cell, CD4 cell]
+  parent: T cell
+
+CD8-positive T cell:
+  aliases: [CD8 T, CD8+ T cell, CD8 T cell, CD8+ T cells, CD8 T cells, cytotoxic T cell, CTL, CD8 cell]
+  parent: T cell
+
+regulatory T cell:
+  aliases: [Treg, Tregs, FOXP3+ Treg, FOXP3 Treg, CD4 regulatory T cell, regulatory T cells, Treg cell]
+  parent: CD4-positive T cell
+
+T helper 17 cell:
+  aliases: [Th17, Th17 cell, Th17 cells, T helper 17]
+  parent: CD4-positive T cell
+
+T helper 1 cell:
+  aliases: [Th1, Th1 cell, Th1 cells, T helper 1]
+  parent: CD4-positive T cell
+
+memory T cell:
+  aliases: [memory T cells, T memory cell]
+  parent: T cell
+
+B cell:
+  aliases: [B cells, B lymphocyte, B lymphocytes, B-cell]
+  parent: lymphocyte
+
+plasma cell:
+  aliases: [plasma cells, antibody-secreting cell, plasmablast, plasmablasts]
+  parent: B cell
+
+NK cell:
+  aliases: [natural killer cell, natural killer cells, NK cells, CD56 NK, NK]
+  parent: lymphocyte
+
+monocyte:
+  aliases: [monocytes, classical monocyte, non-classical monocyte, CD14 monocyte, CD14+ monocyte]
+  parent: myeloid cell
+
+macrophage:
+  aliases: [macrophages, mononuclear phagocyte]
+  parent: myeloid cell
+
+dendritic cell:
+  aliases: [dendritic cells, DC, DCs, conventional dendritic cell, plasmacytoid dendritic cell, pDC, cDC]
+  parent: myeloid cell
+
+neutrophil:
+  aliases: [neutrophils, polymorphonuclear leukocyte, PMN]
+  parent: myeloid cell
+
+myeloid cell:
+  aliases: [myeloid cells, myeloid]
+  parent: leukocyte
+
+lymphocyte:
+  aliases: [lymphocytes]
+  parent: leukocyte
+
+leukocyte:
+  aliases: [leukocytes, white blood cell, immune cell, immune cells, PBMC, PBMCs]
+  parent: null

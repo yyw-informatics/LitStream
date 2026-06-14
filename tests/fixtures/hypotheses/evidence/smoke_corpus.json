@@ -1,0 +1,49 @@
+[
+  {
+    "paper_id": "paper_A",
+    "relevance": "HIGH",
+    "species": ["human"],
+    "tissue": ["PBMC"],
+    "diseases": [],
+    "perturbations": [
+      {"name": "IFN-beta", "type": "cytokine", "source_quote": "Cells were stimulated with IFN-beta."}
+    ],
+    "genes": [
+      {"symbol": "FOXP3", "species": "human", "source_quote": "IFN-beta increased FOXP3 expression in regulatory T cells."}
+    ],
+    "cell_types": [
+      {"name": "regulatory T cell", "source_quote": "regulatory T cells were analyzed."}
+    ],
+    "surface_markers": [],
+    "frequencies": [],
+    "signatures": [],
+    "study_aim": [],
+    "findings": [
+      {"statement": "IFN-beta increased FOXP3 in regulatory T cells", "source_quote": "IFN-beta increased FOXP3 expression in regulatory T cells."}
+    ]
+  },
+  {
+    "paper_id": "paper_B",
+    "relevance": "HIGH",
+    "species": ["human"],
+    "tissue": ["PBMC"],
+    "diseases": [],
+    "perturbations": [],
+    "genes": [
+      {"symbol": "FOXP3", "species": "human", "source_quote": "FOXP3 marked regulatory T cells."},
+      {"symbol": "IL2RA", "species": "human", "source_quote": "CD25/IL2RA was used to identify regulatory T cells."}
+    ],
+    "cell_types": [
+      {"name": "regulatory T cell", "source_quote": "FOXP3 and CD25 marked regulatory T cells."}
+    ],
+    "surface_markers": [
+      {"marker": "CD25", "maps_to_gene": "IL2RA", "source_quote": "FOXP3 and CD25 marked regulatory T cells."}
+    ],
+    "frequencies": [],
+    "signatures": [],
+    "study_aim": [],
+    "findings": [
+      {"statement": "FOXP3 and CD25 marked regulatory T cells", "source_quote": "FOXP3 and CD25 marked regulatory T cells."}
+    ]
+  }
+]

@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "litstream-langgraph"
+version = "0.2.0"
+description = "LitStream — an autonomous, cost-governed literature-research agent built on LangGraph"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Yuanyuan Wang" }]
+keywords = ["bioinformatics", "literature-review", "langgraph", "langchain", "agents", "llm", "cost-routing"]
+
+# Core runtime shared across LitStream entry points.
+dependencies = [
+    "PyYAML>=6.0",          # routine / source / model configs
+    "pypdf>=4.0",           # PDF -> text for paper reading
+]
+
+[project.optional-dependencies]
+# LangGraph pipeline dependencies.
+langgraph = [
+    "langgraph>=1.0",
+    "langchain>=1.0",
+    "langchain-anthropic>=1.0",
+    "langchain-openai>=1.0",
+    "langgraph-checkpoint-sqlite>=2.0",
+]
+dev = ["pytest>=8.0", "pytest-randomly>=3.15", "litstream-langgraph[eval]"]
+
+# Eval — schema-driven extraction + the find-then-verify grounding cascade (litstream/eval).
+# Light tier: imports evaluation modules and uses the in-memory vector store.
+eval = [
+    "litstream-langgraph[langgraph]",   # langchain-core: InMemoryVectorStore + chat models
+    "numpy>=1.26",                       # in-memory vector-store similarity
+]
+# Full grounding backends: HuggingFace sentence embeddings + the MiniCheck entailment verifier.
+# Heavy — pulls torch via sentence-transformers / accelerate; minicheck is git-only (not on PyPI).
+grounding = [
+    "litstream-langgraph[eval]",
+    "langchain-huggingface>=1.0",
+    "sentence-transformers>=2.2",
+    "accelerate>=0.26",
+    "minicheck @ git+https://github.com/Liyan06/MiniCheck.git",
+]
+# Hypothesis-candidate generator. networkx for the evidence graph; matplotlib
+# is optional (the portfolio plot degrades to a Markdown table without it, and Mermaid traces are
+# pure text). Core imports + the offline default run need only networkx (+ PyYAML, already core).
+hypothesis = [
+    "litstream-langgraph[eval]",
+    "networkx>=3.0",
+    "matplotlib>=3.7",
+]
+
+[project.scripts]
+litstream-lg = "litstream_lg.run:main"
+litstream-hypothesize = "litstream.hypotheses.cli:run_main"  # generate hypothesis candidates
+litstream-hypothesize-eval = "litstream.hypotheses.cli:eval_main"
+
+[tool.setuptools.packages.find]
+include = ["litstream*"]
+
+# Ship the runtime data files loaded via Path(__file__): the SQLite schemas
+# (ledger/library), the routine/source/model YAML configs, and the eval fixtures.
+[tool.setuptools.package-data]
+litstream = ["**/*.sql", "**/*.yaml", "**/*.yml", "**/*.txt", "**/*.jsonl", "**/*.json"]
+litstream_evidence = ["data/*.json"]       # the claim-entailment battery benchmark
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

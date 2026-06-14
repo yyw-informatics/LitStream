@@ -1,0 +1,53 @@
+# ── Secrets — never commit ──────────────────────────────────────────────
+.env
+.env.local
+*.key
+
+# ── Cost ledger / SQLite working DB (v1 + v2 checkpointer) ──────────────
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite-*
+litstream.db*
+litstream_lg.db*
+litstream_lg_checkpoints.*
+
+# ── Content-addressed paper library (bulky, copyrighted PDFs) ───────────
+# Anchored with a leading slash to the REPO ROOT so it ignores the top-level
+# data dir only — NOT the `litstream/library/` source package (PaperStore).
+/library/
+/digests/
+/.litstream/
+
+# ── Generated evaluation artifacts (regenerate with `python -m litstream.eval.*`) ──
+/results/
+# fetched public benchmark corpora (re-download: python -m litstream.eval.benchmark.fetch)
+/litstream/eval/benchmark/data/
+
+# ── Reference repos studied during design (not ours to ship) ────────────
+/reference/
+
+# ── kb-skills plugin: linked as a sibling clone, not vendored ───────────
+#   git clone https://github.com/yyw-informatics/kb-skills-bioinformatics
+/kb-skills-bioinformatics/
+
+# ── Local dev / research notes — kept out of the public repo ────────────
+/dev-docs/
+
+# ── Python ──────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# ── OS / editor ─────────────────────────────────────────────────────────
+.DS_Store
+.idea/
+.vscode/
