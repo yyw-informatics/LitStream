@@ -1,12 +1,9 @@
 # LitStream
 
-<p align="center">
-  <a href="https://github.com/yyw-informatics/LitStream/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/yyw-informatics/LitStream/actions/workflows/ci.yml/badge.svg"></a>
-  <img alt="Python 3.11+" src="https://img.shields.io/badge/python-3.11%2B-3776AB?logo=python&logoColor=white">
-  <img alt="LangGraph agent runtime" src="https://img.shields.io/badge/LangGraph-agent_runtime-1C3C3C">
-  <img alt="Bioinformatics literature review" src="https://img.shields.io/badge/domain-bioinformatics-0E7C7B">
-  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-green"></a>
-</p>
+[![CI](https://github.com/yyw-informatics/LitStream/actions/workflows/ci.yml/badge.svg)](https://github.com/yyw-informatics/LitStream/actions/workflows/ci.yml)
+![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776AB?logo=python&logoColor=white)
+![LangGraph >=1.0](https://img.shields.io/badge/LangGraph-%3E%3D1.0-1C3C3C)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 LitStream is a LangGraph-based literature research system for bioinformatics. It acquires papers,
 reads them through a controlled workflow, extracts structured evidence, checks claims against source

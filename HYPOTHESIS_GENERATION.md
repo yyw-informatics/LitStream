@@ -1,38 +1,19 @@
 # Context-Bound Hypothesis Generation
 
-`litstream.hypotheses` turns grounded biomedical evidence records into ranked, testable
-hypothesis candidates. The module is designed for scientific AI workflows where the goal is not
-free-form ideation, but disciplined generation of plausible next experiments from auditable
-literature evidence.
+## Approach
 
-The system separates three responsibilities that are often conflated in LLM-based discovery tools:
-
-- extracting structured claims from source-grounded evidence;
-- composing those claims through typed, inspectable motifs;
-- ranking outputs by evidence quality, biological context compatibility, measurability, and risk.
-
-The result is a candidate-generation layer for AI-assisted science: every proposed hypothesis
-preserves its evidence path, exposes its assumptions, and resolves to an experimentally measurable
-readout.
-
-## Research Contribution
-
-This component implements a conservative hypothesis-generation architecture for literature-driven
-single-cell biology:
-
-- **Typed evidence representation.** Findings are normalized into perturbation, disease, gene,
-  signature, marker, cell-type, species, tissue, and evidence-mode frames.
-- **Source-grounded support.** Candidate construction only uses support frames that pass quote-level
-  grounding checks from the configured verifier.
-- **Graph-based composition.** Evidence is assembled into a typed graph, enabling local multi-hop
-  reasoning without asking a model to invent unsupported mechanisms.
-- **Biology-aware constraints.** Cross-species joins, incompatible cell-lineage compositions,
-  generic hub mediators, negated effects, and ambiguous multi-anchor findings are filtered before
-  ranking.
-- **Experiment-oriented output.** Candidates are phrased as predictions with proposed CITE-seq or
-  RNA readouts, not as validated discoveries.
-- **Auditability.** Reports include JSONL, CSV, Markdown, GraphML, Mermaid traces, diagnostics, and
-  skipped-finding records.
+- **Objective.** Generate ranked, testable hypothesis candidates from grounded biomedical evidence records,
+  with emphasis on literature-driven single-cell biology.
+- **Structured evidence.** Findings are normalized into biomedical frames and
+  composed through typed graph motifs instead of model-invented mechanisms.
+- **Grounded constraints.** Candidate construction uses quote-grounded support frames, while
+  cross-species joins, incompatible cell lineages, generic mediators, negated effects, and ambiguous
+  anchors are blocked before ranking.
+- **Interpretable ranking.** Candidates are scored by grounding, context compatibility, measurability,
+  evidence design, nonredundancy, specificity, and risk.
+- **Experimental traceability.** Outputs are measurable predictions, not validated discoveries,
+  with evidence paths, assumptions, warnings, diagnostics, JSONL, CSV, Markdown, GraphML, and Mermaid
+  traces preserved.
 
 ## Pipeline
 
@@ -116,6 +97,40 @@ Readouts: FOXP3 RNA; CD25 ADT.
 
 Warning:
 CD25 ADT is inferred through marker-gene mapping; protein change is not directly supported.
+```
+
+### Example Score Calculation
+
+The score is a prioritization rank, not a probability that the hypothesis is true. The ranker combines
+weighted evidence, context, measurability, design, novelty, and specificity terms, then subtracts
+explicit risk penalties:
+
+```text
+rank_score =
+  0.30 * grounding_score
++ 0.20 * context_match_score
++ 0.20 * measurability_score
++ 0.15 * evidence_design_score
++ 0.10 * local_nonredundancy_score
++ 0.05 * specificity_score
+- risk_penalty
+```
+
+For this candidate:
+
+| Component | Value | Weight | Contribution | Rationale |
+|---|---:|---:|---:|---|
+| `grounding_score` | 1.000 | 0.30 | 0.300 | Supporting frames are grounded to source quotes. |
+| `context_match_score` | 1.000 | 0.20 | 0.200 | Species, tissue, cell type, and perturbation context are specified. |
+| `measurability_score` | 1.000 | 0.20 | 0.200 | FOXP3 RNA and paired CD25 ADT are measurable by CITE-seq. |
+| `evidence_design_score` | 1.000 | 0.15 | 0.150 | The IFN-beta -> FOXP3 support edge is interventional. |
+| `local_nonredundancy_score` | 0.700 | 0.10 | 0.070 | The candidate is not a direct restatement, but reuses corpus entities. |
+| `specificity_score` | 0.667 | 0.05 | 0.033 | Cell type, perturbation, readout, and tissue are named; comparator and signature are absent. |
+| `risk_penalty` | 0.200 | - | -0.200 | CD25 ADT is an RNA-to-surface-protein bridge and requires a warning. |
+
+```text
+subtotal = 0.300 + 0.200 + 0.200 + 0.150 + 0.070 + 0.033 = 0.953
+rank_score = 0.953 - 0.200 = 0.753
 ```
 
 The candidate is intentionally phrased as a measurable prediction. The system does not claim global
